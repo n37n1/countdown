@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Simple Countdown</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f5f5f5;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 40px;
+      color: #333;
+    }
+    h1 {
+      margin-bottom: 20px;
+    }
+    .card {
+      background: white;
+      padding: 20px 30px;
+      border-radius: 16px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      max-width: 350px;
+      width: 100%;
+      text-align: center;
+    }
+    input {
+      padding: 10px;
+      width: 100%;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      margin-bottom: 15px;
+    }
+    button {
+      padding: 10px 20px;
+      background: #4a6cff;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 16px;
+      width: 100%;
+    }
+    #output {
+      margin-top: 20px;
+      font-size: 22px;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <h1>Countdown Timer</h1>
+  <div class="card">
+    <input type="datetime-local" id="targetTime" />
+    <button onclick="startCountdown()">Start Countdown</button>
+    <div id="output">Set a time to begin.</div>
+  </div>
+
+  <script>
+    let timer;
+
+    function startCountdown() {
+      const targetValue = document.getElementById("targetTime").value;
+      if (!targetValue) {
+        document.getElementById("output").textContent = "Please choose a date and time.";
+        return;
+      }
+
+      const targetDate = new Date(targetValue).getTime();
+
+      if (timer) clearInterval(timer);
+
+      timer = setInterval(() => {
+        const now = Date.now();
+        const diff = targetDate - now;
+
+        if (diff <= 0) {
+          clearInterval(timer);
+          document.getElementById("output").textContent = "Time's up!";
+          return;
+        }
+
+        const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+        const minutes = Math.floor((diff / (1000 * 60)) % 60);
+        const seconds = Math.floor((diff / 1000) % 60);
+
+        document.getElementById("output").textContent =
+          `${days}d ${hours}h ${minutes}m ${seconds}s`;
+      }, 1000);
+    }
+  </script>
+</body>
+</html>
